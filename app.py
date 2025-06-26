@@ -10,6 +10,7 @@ def load_data():
             pd.DataFrame(columns=["Name", "Skill", "Phone"]).to_excel(writer, sheet_name="Artisans", index=False)
             pd.DataFrame(columns=["Product", "Price", "Stock", "Artisan"]).to_excel(writer, sheet_name="Products", index=False)
             pd.DataFrame(columns=["Product", "Quantity", "Buyer"]).to_excel(writer, sheet_name="Orders", index=False)
+
     xls = pd.ExcelFile(FILE_PATH, engine='openpyxl')
     artisans = pd.read_excel(xls, sheet_name="Artisans")
     products = pd.read_excel(xls, sheet_name="Products")
@@ -17,7 +18,7 @@ def load_data():
     return artisans, products, orders
 
 def save_data(artisans, products, orders):
-    with pd.ExcelWriter(FILE_PATH, engine='openpyxl") as writer:
+    with pd.ExcelWriter(FILE_PATH, engine='openpyxl') as writer:
         artisans.to_excel(writer, sheet_name="Artisans", index=False)
         products.to_excel(writer, sheet_name="Products", index=False)
         orders.to_excel(writer, sheet_name="Orders", index=False)
