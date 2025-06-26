@@ -6,7 +6,7 @@ FILE_PATH = "artisan_store.xlsx"
 
 def load_data():
     if not os.path.exists(FILE_PATH):
-        with pd.ExcelWriter(FILE_PATH, engine='openpyxl') as writer:
+       with pd.ExcelWriter(FILE_PATH, engine='openpyxl') as writer:
             pd.DataFrame(columns=["Name", "Skill", "Phone"]).to_excel(writer, sheet_name="Artisans", index=False)
             pd.DataFrame(columns=["Product", "Price", "Stock", "Artisan"]).to_excel(writer, sheet_name="Products", index=False)
             pd.DataFrame(columns=["Product", "Quantity", "Buyer"]).to_excel(writer, sheet_name="Orders", index=False)
