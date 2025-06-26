@@ -8,7 +8,7 @@ ORDERS_CSV = "orders.csv"
 
 def load_data():
     if not os.path.exists(ARTISANS_CSV):
-        pd.DataFrame(columns=["Name", "Skill", "Phone"]).to_csv(ARTISANS_CSV, index=False)
+        pd.DataFrame(columns=["Name", "Phone", "Location"]).to_csv(ARTISANS_CSV, index=False)
     if not os.path.exists(PRODUCTS_CSV):
         pd.DataFrame(columns=["Product", "Price", "Stock", "Artisan"]).to_csv(PRODUCTS_CSV, index=False)
     if not os.path.exists(ORDERS_CSV):
@@ -32,10 +32,10 @@ menu = st.sidebar.selectbox("Menu", ["Register Artisan", "Add Product", "View Pr
 
 if menu == "Register Artisan":
     name = st.text_input("Name")
-    skill = st.text_input("Skill")
-    phone = st.text_input("Phone")
+    skill = st.text_input("Phone")
+    phone = st.text_input("Location")
     if st.button("Register"):
-        artisans = pd.concat([artisans, pd.DataFrame([{"Name": name, "Skill": skill, "Phone": phone}])], ignore_index=True)
+        artisans = pd.concat([artisans, pd.DataFrame([{"Name": name, "Phone": phone, "Location": "location" }])], ignore_index=True)
         save_data(artisans, products, orders)
         st.success("Artisan Registered!")
 
