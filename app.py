@@ -2,28 +2,29 @@ import streamlit as st
 import pandas as pd
 import os
 
-FILE_PATH = "artisan_store.xlsx"
+ARTISANS_CSV = "artisans.csv"
+PRODUCTS_CSV = "products.csv"
+ORDERS_CSV = "orders.csv"
 
 def load_data():
-    if not os.path.exists(FILE_PATH):
-        with pd.ExcelWriter(FILE_PATH, engine='openpyxl') as writer:
-            pd.DataFrame(columns=["Name", "Skill", "Phone"]).to_excel(writer, sheet_name="Artisans", index=False)
-            pd.DataFrame(columns=["Product", "Price", "Stock", "Artisan"]).to_excel(writer, sheet_name="Products", index=False)
-            pd.DataFrame(columns=["Product", "Quantity", "Buyer"]).to_excel(writer, sheet_name="Orders", index=False)
+    if not os.path.exists(ARTISANS_CSV):
+        pd.DataFrame(columns=["Name", "Skill", "Phone"]).to_csv(ARTISANS_CSV, index=False)
+    if not os.path.exists(PRODUCTS_CSV):
+        pd.DataFrame(columns=["Product", "Price", "Stock", "Artisan"]).to_csv(PRODUCTS_CSV, index=False)
+    if not os.path.exists(ORDERS_CSV):
+        pd.DataFrame(columns=["Product", "Quantity", "Buyer"]).to_csv(ORDERS_CSV, index=False)
 
-    xls = pd.ExcelFile(FILE_PATH, engine='openpyxl')
-    artisans = pd.read_excel(xls, sheet_name="Artisans")
-    products = pd.read_excel(xls, sheet_name="Products")
-    orders = pd.read_excel(xls, sheet_name="Orders")
+    artisans = pd.read_csv(ARTISANS_CSV)
+    products = pd.read_csv(PRODUCTS_CSV)
+    orders = pd.read_csv(ORDERS_CSV)
     return artisans, products, orders
 
 def save_data(artisans, products, orders):
-    with pd.ExcelWriter(FILE_PATH, engine='openpyxl') as writer:
-        artisans.to_excel(writer, sheet_name="Artisans", index=False)
-        products.to_excel(writer, sheet_name="Products", index=False)
-        orders.to_excel(writer, sheet_name="Orders", index=False)
+    artisans.to_csv(ARTISANS_CSV, index=False)
+    products.to_csv(PRODUCTS_CSV, index=False)
+    orders.to_csv(ORDERS_CSV, index=False)
 
-st.title("🧵 Artisan Product App")
+st.title("🧵 Artisan Product Store")
 
 artisans, products, orders = load_data()
 
@@ -34,9 +35,9 @@ if menu == "Register Artisan":
     skill = st.text_input("Skill")
     phone = st.text_input("Phone")
     if st.button("Register"):
-        artisans = artisans.append({"Name": name, "Skill": skill, "Phone": phone}, ignore_index=True)
+        artisans = pd.concat([artisans, pd.DataFrame([{"Name": name, "Skill": skill, "Phone": phone}])], ignore_index=True)
         save_data(artisans, products, orders)
-        st.success("Artisan Registered")
+        st.success("Artisan Registered!")
 
 elif menu == "Add Product":
     product = st.text_input("Product Name")
@@ -44,12 +45,12 @@ elif menu == "Add Product":
     stock = st.number_input("Stock", min_value=0)
     artisan = st.selectbox("Artisan", artisans["Name"] if not artisans.empty else [])
     if st.button("Add Product"):
-        products = products.append({"Product": product, "Price": price, "Stock": stock, "Artisan": artisan}, ignore_index=True)
+        products = pd.concat([products, pd.DataFrame([{"Product": product, "Price": price, "Stock": stock, "Artisan": artisan}])], ignore_index=True)
         save_data(artisans, products, orders)
-        st.success("Product Added")
+        st.success("Product Added!")
 
 elif menu == "View Products":
-    st.write("### Available Products")
+    st.write("### Products for Sale")
     st.dataframe(products)
 
 elif menu == "Buy Product":
@@ -60,8 +61,8 @@ elif menu == "Buy Product":
         index = products[products["Product"] == product].index[0]
         if products.loc[index, "Stock"] >= quantity:
             products.loc[index, "Stock"] -= quantity
-            orders = orders.append({"Product": product, "Quantity": quantity, "Buyer": buyer}, ignore_index=True)
+            orders = pd.concat([orders, pd.DataFrame([{"Product": product, "Quantity": quantity, "Buyer": buyer}])], ignore_index=True)
             save_data(artisans, products, orders)
-            st.success("Purchase successful")
+            st.success("Purchase successful!")
         else:
             st.error("Not enough stock")
