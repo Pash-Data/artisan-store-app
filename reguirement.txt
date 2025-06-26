@@ -1,0 +1,3 @@
+Streamlit: for running the app as a web interface
+pandas: for data handling and manipulation
+openpyxl: for reading/writing Excel files
