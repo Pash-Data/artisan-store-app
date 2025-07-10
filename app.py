@@ -24,7 +24,7 @@ def save_data(artisans, products, orders):
     products.to_csv(PRODUCTS_CSV, index=False)
     orders.to_csv(ORDERS_CSV, index=False)
 
-st.title("🧵 Artisan Product Store")
+st.title("🧵 Artisan Store App")
 
 artisans, products, orders = load_data()
 
