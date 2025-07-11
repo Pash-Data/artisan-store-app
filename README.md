@@ -18,8 +18,7 @@ This was developed as part of a capstone project to demonstrate how local soluti
 
 ## 🚀 Live Demo
 
-👉 [Click here to open the live app on Streamlit Cloud] https://artisan-store-app-npnhcnp8khshelvgd2ojpd.streamlit.app/ 
-
+👉 [Click here to open the live app on Streamlit Cloud] https://artisan-store-app-2fbvvypmukwsfchu4atvt3.streamlit.app
 ---
 
 ## 🛠 Tech Stack
